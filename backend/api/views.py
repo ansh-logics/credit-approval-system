@@ -3,7 +3,7 @@ from rest_framework.response import Response, Serializer
 from rest_framework import status
 from .models import Customer, Loan
 from .Serializer import CustomerRegisterSerializer, LoanEligibilityRequestSerializer, LoanCreateSerializer, LoanDetailSerializer, LoanListSerializer
-from service import calculate_credit_score, get_interest_rate_from_score, calculate_emi
+from .service import calculate_credit_score, get_interest_rate_from_score, calculate_emi
 
 
 class RegisterCustomerView(APIView):

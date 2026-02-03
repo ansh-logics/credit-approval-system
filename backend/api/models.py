@@ -5,6 +5,7 @@ class Customer(models.Model):
     #i've not created customer id because django will already handle the id
     first_name = models.CharField(max_length = 100)
     last_name = models.CharField(max_length = 100)
+    age = models.IntegerField(default=0)
     phone_number = models.CharField(max_length = 10, unique = True)
     monthly_salary= models.IntegerField()
     approved_limit = models.IntegerField()
@@ -28,5 +29,6 @@ class Loan(models.Model):
     emi_paid_on_time = models.IntegerField()
     date_of_approval = models.DateField()
     end_date = models.DateField()
+
     def __str__(self):
-        return f"Loan {self.id} - {self.customer_id.first_name} - ₹{self.loan_amount}"
+        return f"Loan {self.id} - {self.customer.first_name} - ₹{self.loan_amount}"

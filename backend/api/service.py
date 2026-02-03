@@ -1,5 +1,5 @@
 from datetime import date
-from models import Loan
+from .models import Loan
 
 def calculate_credit_score(customer):
     loans = Loan.objects.filter(customer=customer)

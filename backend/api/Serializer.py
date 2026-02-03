@@ -1,10 +1,9 @@
+from datetime import date, timedelta
+
 from rest_framework import serializers
-from models import Loan, Customer
-from services import (
-    calculate_credit_score,
-    get_interest_rate_from_score,
-    calculate_emi
-)
+
+from .models import Customer, Loan
+from .service import calculate_credit_score, calculate_emi, get_interest_rate_from_score
 
 class CustomerRegisterSerializer(serializers.ModelSerializer):
     class Meta:
@@ -82,11 +81,20 @@ class LoanCreateSerializer(serializers.ModelSerializer):
         if emi > 0.5 * customer.monthly_salary:
             raise serializers.ValidationError("EMI exceeds 50% of salary")
 
+        # Derive dates for the new loan
+        start_date = date.today()
+        end_date = start_date + timedelta(days=30 * tenure)
+
         loan = Loan.objects.create(
             customer=customer,
+            loan_amount=loan_amount,
+            tenure=tenure,
             interest_rate=interest_rate,
             emi=emi,
-            **validated_data
+            start_date=start_date,
+            emi_paid_on_time=0,
+            date_of_approval=start_date,
+            end_date=end_date,
         )
 
         customer.current_debt += loan_amount
