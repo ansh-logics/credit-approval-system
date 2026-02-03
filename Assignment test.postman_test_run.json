@@ -1,0 +1,141 @@
+{
+	"id": "1a8627ed-906b-4417-87ab-f9c88ee2421c",
+	"name": "Assignment test",
+	"timestamp": "2026-02-03T10:04:12.510Z",
+	"collection_id": "36751168-fa699663-2e34-476c-bf94-6fbddb691e3e",
+	"folder_id": 0,
+	"environment_id": "36751168-f6653c35-105d-42f2-96e2-d3871877f421",
+	"totalPass": 1,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2026-02-03T10:04:11.713Z",
+	"totalFail": 0,
+	"results": [
+		{
+			"id": "3d9f6965-2cd6-40e7-bf42-01bf0abed2c2",
+			"name": "Register",
+			"url": "http://localhost:8000/api/register/",
+			"time": 127,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Successful POST request": true
+			},
+			"testPassFailCounts": {
+				"Successful POST request": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				127
+			],
+			"allTests": [
+				{
+					"Successful POST request": true
+				}
+			]
+		},
+		{
+			"id": "2f9a39f1-efa2-4faa-8c5c-8a1d62af0fbf",
+			"name": "Check Eligibility",
+			"url": "http://localhost:8000/api/check-eligibility/",
+			"time": 17,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				17
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "9c491395-e8e9-4309-8154-49d4393f0269",
+			"name": "Create Loan",
+			"url": "http://localhost:8000/api/create-loan/",
+			"time": 17,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				17
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "3eaa3e7a-3c66-4e4f-b0a9-9ad5f6ae6acf",
+			"name": "view Loan",
+			"url": "http://localhost:8000/api/view-loan/9997/",
+			"time": 12,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				12
+			],
+			"allTests": [
+				{}
+			]
+		},
+		{
+			"id": "707445ac-c2ed-456e-9093-1726ef8bd3fd",
+			"name": "View Loans",
+			"url": "http://localhost:8000/api/view-loans/1/",
+			"time": 15,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				15
+			],
+			"allTests": [
+				{}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 188,
+	"collection": {
+		"requests": [
+			{
+				"id": "3d9f6965-2cd6-40e7-bf42-01bf0abed2c2",
+				"method": "POST"
+			},
+			{
+				"id": "2f9a39f1-efa2-4faa-8c5c-8a1d62af0fbf",
+				"method": "POST"
+			},
+			{
+				"id": "9c491395-e8e9-4309-8154-49d4393f0269",
+				"method": "POST"
+			},
+			{
+				"id": "3eaa3e7a-3c66-4e4f-b0a9-9ad5f6ae6acf",
+				"method": "GET"
+			},
+			{
+				"id": "707445ac-c2ed-456e-9093-1726ef8bd3fd",
+				"method": "GET"
+			}
+		]
+	}
+}
