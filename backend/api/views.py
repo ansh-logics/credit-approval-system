@@ -1,8 +1,15 @@
 from rest_framework.views import APIView
-from rest_framework.response import Response, Serializer
+from rest_framework.response import Response
 from rest_framework import status
+
 from .models import Customer, Loan
-from .Serializer import CustomerRegisterSerializer, LoanEligibilityRequestSerializer, LoanCreateSerializer, LoanDetailSerializer, LoanListSerializer
+from .serializers import (
+    CustomerRegisterSerializer,
+    LoanEligibilityRequestSerializer,
+    LoanCreateSerializer,
+    LoanDetailSerializer,
+    LoanListSerializer,
+)
 from .service import calculate_credit_score, get_interest_rate_from_score, calculate_emi
 
 
@@ -18,7 +25,13 @@ class CheckEligibilityView(APIView):
         req = LoanEligibilityRequestSerializer(data=request.data)
         req.is_valid(raise_exception=True)
 
-        customer = Customer.objects.get(id=req.validated_data["customer_id"])
+        try:
+            customer = Customer.objects.get(id=req.validated_data["customer_id"])
+        except Customer.DoesNotExist:
+            return Response(
+                {"error": "Customer not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
         score = calculate_credit_score(customer)
         interest_rate = get_interest_rate_from_score(score)
 
@@ -51,8 +64,15 @@ class CreateLoanView(APIView):
 
 class ViewLoanView(APIView):
     def get(self, request, loan_id):
-        loan = Loan.objects.get(id=loan_id)
-        return Response(LoanDetailSerializer(loan).data)
+        try:
+            loan = Loan.objects.get(id=loan_id)
+        except Loan.DoesNotExist:
+            return Response(
+                {"error": "Loan not found"},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+        serializer = LoanDetailSerializer(loan)
+        return Response(serializer.data)
 
 class ViewCustomerLoansView(APIView):
     def get(self, request, customer_id):

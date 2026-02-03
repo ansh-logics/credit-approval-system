@@ -5,6 +5,7 @@ from rest_framework import serializers
 from .models import Customer, Loan
 from .service import calculate_credit_score, calculate_emi, get_interest_rate_from_score
 
+
 class CustomerRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
@@ -30,11 +31,13 @@ class CustomerRegisterSerializer(serializers.ModelSerializer):
             **validated_data
         )
 
+
 class LoanEligibilityRequestSerializer(serializers.Serializer):
     customer_id = serializers.IntegerField()
     loan_amount = serializers.FloatField()
     interest_rate = serializers.FloatField()
     tenure = serializers.IntegerField()
+
 
 class LoanEligibilityResponseSerializer(serializers.Serializer):
     customer_id = serializers.IntegerField()
@@ -43,6 +46,7 @@ class LoanEligibilityResponseSerializer(serializers.Serializer):
     corrected_interest_rate = serializers.FloatField()
     tenure = serializers.IntegerField()
     monthly_installment = serializers.FloatField()
+
 
 class LoanCreateSerializer(serializers.ModelSerializer):
     customer_id = serializers.PrimaryKeyRelatedField(
@@ -102,10 +106,12 @@ class LoanCreateSerializer(serializers.ModelSerializer):
 
         return loan
 
+
 class CustomerMiniSerializer(serializers.ModelSerializer):
     class Meta:
         model = Customer
         fields = ["id", "first_name", "last_name", "phone_number", "age"]
+
 
 class LoanDetailSerializer(serializers.ModelSerializer):
     customer = CustomerMiniSerializer()
@@ -120,6 +126,7 @@ class LoanDetailSerializer(serializers.ModelSerializer):
             "emi",
             "tenure",
         ]
+
 
 class LoanListSerializer(serializers.ModelSerializer):
     repayments_left = serializers.SerializerMethodField()
@@ -136,3 +143,4 @@ class LoanListSerializer(serializers.ModelSerializer):
 
     def get_repayments_left(self, obj):
         return max(obj.tenure - obj.emi_paid_on_time, 0)
+

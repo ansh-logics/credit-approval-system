@@ -7,7 +7,7 @@ from typing import Any
 import pandas as pd
 from django.conf import settings
 from django.core.management.base import BaseCommand
-from django.db import IntegrityError, transaction
+from django.db import IntegrityError, transaction, connection
 
 from  ...models import Customer, Loan
 
@@ -88,8 +88,43 @@ class Command(BaseCommand):
 
         self.ingest_customers(customers_path)
         self.ingest_loans(loans_path)
+        self._reset_sequences()
 
         self.stdout.write(self.style.SUCCESS("Data ingestion completed successfully"))
+
+    def _reset_sequences(self) -> None:
+        """
+        Ensure PostgreSQL sequences for Customer and Loan IDs are in sync with
+        the maximum IDs we just ingested. This prevents duplicate key errors
+        when new rows are created via the API.
+        """
+        if connection.vendor != "postgresql":
+            return
+
+        with connection.cursor() as cursor:
+            # Reset Customer.id sequence
+            cursor.execute(
+                """
+                SELECT setval(
+                    pg_get_serial_sequence('api_customer', 'id'),
+                    COALESCE(MAX(id), 1),
+                    TRUE
+                )
+                FROM api_customer;
+                """
+            )
+
+            # Reset Loan.id sequence
+            cursor.execute(
+                """
+                SELECT setval(
+                    pg_get_serial_sequence('api_loan', 'id'),
+                    COALESCE(MAX(id), 1),
+                    TRUE
+                )
+                FROM api_loan;
+                """
+            )
 
     def ingest_customers(self, path: Path) -> None:
         if not path.exists():
